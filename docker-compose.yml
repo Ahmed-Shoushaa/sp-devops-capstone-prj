@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  db:
+    image: mysql
+    ports:
+      - "30000:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+      #- ./db:/docker-entrypoint-initdb.d/:ro
+
+  # db:
+  #   build: ./db
+  #   ports:
+  #     - "30000:3306"
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  app:
+    build: ./app
+    ports:
+      - "5000:5000"
+    links:
+      - db
+
+
+
+
+  # db:
+  #   container_name: db
+  #   image: mysql/mysql-server
+  #   ports:
+  #     - "3306:3306"
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: root
+  #     MYSQL_DATABASE: BucketList
+  #     MYSQL_USER: root
+  #   volumes:
+  #     - ./MySQL_Queries:/docker-entrypoint-initdb.d/:ro
+  #   networks:
+  #     - backend
